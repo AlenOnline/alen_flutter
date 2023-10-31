@@ -1,6 +1,9 @@
+import 'package:form_app/model/posts_model.dart';
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_app/constants/text_style_values.dart';
-import 'package:like_button/like_button.dart';
+import 'package:http/http.dart' as http;
+
 
 class SecondPage extends StatefulWidget {
   const SecondPage({super.key});
@@ -10,44 +13,65 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-  List products = ['Привет', 'Hello', 'Bye', 'ByeBye'];
+ List<PostsModel> postList = [] ;
+
+  Future<List<PostsModel>> getPostApi ()async{
+    final resposne = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts')) ;
+    var data = jsonDecode(resposne.body.toString());
+    if(resposne.statusCode == 200){
+      postList.clear();
+      for(Map i in data){
+        postList.add(PostsModel.fromJson(i));
+      }
+      return postList ;
+    }else {
+      return postList ;
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-                title: Text('${products[index]}', style: AppTextStyles.px12blue,),
-                trailing: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minWidth: 44,
-                    minHeight: 44,
-                    maxWidth: 64,
-                    maxHeight: 64,
-                  ),
-                  child: LikeButton(
-                    size: 20,
-                    circleColor: const CircleColor(
-                        start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                    bubblesColor: const BubblesColor(
-                      dotPrimaryColor: Color(0xff33b5e5),
-                      dotSecondaryColor: Color(0xff0099cc),
-                    ),
-                    likeBuilder: (bool isLiked) {
-                      return Icon(
-                        Icons.favorite,
-                        color: isLiked ? Colors.red : Colors.grey,
-                        size: 20,
-                      );
-                    },
-                    likeCount: 0,
-                  ),
-                ));
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Praxis 10'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder(
+              future: getPostApi(),
+              builder: (context , snapshot){
+                if(!snapshot.hasData){
+                  return Text('Loading');
+                }else {
+                  return ListView.builder(
+                      itemCount: postList.length,
+                      itemBuilder: (context, index){
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            Text('Title' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold),),
+                            SizedBox(height: 3,),
+                            Text(postList[index].title.toString()),
+                            SizedBox(height: 5,),
+                            Text('Description' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold),),
+                            SizedBox(height: 3,),
+                            Text(postList[index].body.toString() , style: Theme.of(context).textTheme.bodyText1)
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+          )
+        ],
       ),
     );
   }
