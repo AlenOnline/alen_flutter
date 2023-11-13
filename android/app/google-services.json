@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768744802068",
+    "project_id": "exal-8f277",
+    "storage_bucket": "exal-8f277.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768744802068:android:70fa76577a7a9aabbc6401",
+        "android_client_info": {
+          "package_name": "com.example.exal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAush2bMZXR330gtTWgYR-fZT0ID6G0x9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
