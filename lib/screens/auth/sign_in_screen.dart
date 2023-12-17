@@ -2,6 +2,7 @@ import 'package:exal/screens/auth/components/my_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
 
@@ -102,13 +103,17 @@ class _SignInScreenState extends State<SignInScreen> {
 								? SizedBox(
 										width: MediaQuery.of(context).size.width * 0.5,
 										child: TextButton(
-											onPressed: () {
+											onPressed: () async {
 												if (_formKey.currentState!.validate()) {
 													context.read<SignInBloc>().add(SignInRequired(
 														emailController.text,
 														passwordController.text)
 													);
 												}
+
+                          final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                          sharedPreferences.setString('email', emailController.text);
+
 											},
 											style: TextButton.styleFrom(
 												elevation: 3.0,
@@ -116,7 +121,11 @@ class _SignInScreenState extends State<SignInScreen> {
 												foregroundColor: Colors.white,
 												shape: RoundedRectangleBorder(
 													borderRadius: BorderRadius.circular(60)
-												)
+												),
+                        // onPressed:() async{
+                        //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                        //   sharedPreferences.setString('email', emailController.text);
+                        // } 
 											),
 											child: const Padding(
 												padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),

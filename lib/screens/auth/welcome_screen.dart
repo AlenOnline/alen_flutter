@@ -10,6 +10,9 @@ import '../../blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'package:exal/screens/auth/sign_in_screen.dart';
 import 'package:exal/screens/auth/sign_up_screen.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -74,13 +77,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 								),
 							),
 							BackdropFilter(
-								filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
+								filter: ImageFilter.blur(sigmaX: 105.0, sigmaY: 105.0),
 								child: Container(),
 							),
 							Align(
 								alignment: Alignment.bottomCenter,
 								child: SizedBox(
-									height: MediaQuery.of(context).size.height / 1.8,
+									height: MediaQuery.of(context).size.height / 1.3,
 									child: Column(
 										children: [
 											Padding(
